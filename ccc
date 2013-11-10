@@ -1,0 +1,40 @@
+#!/bin/bash
+
+mkdir -p  ~/.ccc
+
+usage () {
+echo "USAGE
+$0 Amount From-currency To-currency [Date]
+"
+exit
+}
+
+get_rate () {
+
+RATE=$(cat ~/.ccc/rates.csv | grep -P "$DATE,$FROM,$TO,.+" |head -n1 | cut -d, -f4)
+if echo "$RATE" | grep -qP "\d"
+then    :
+else   RATE=$( wget -q -O - http://currencies.apps.grandtrunk.net/getrate/$DATE/$FROM/$TO ) \
+                || echo wget FAIL
+        echo "$DATE,$FROM,$TO,$RATE" >>  ~/.ccc/rates.csv
+fi
+
+
+}
+
+AMOUNT=$1
+FROM=$2
+TO=$3
+DATE=$4
+
+[ -z "$TO" ] && usage
+
+[ -z "$DATE" ] && DATE=`date +%F`
+
+get_rate
+
+printf '%.2f\n' $(echo "scale=2; $RATE*$AMOUNT" |bc)
+
+
+
+
