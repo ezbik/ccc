@@ -1,0 +1,68 @@
+#!/usr/bin/perl
+
+open IN, "<ambar.txt";
+
+use POSIX qw(strftime);
+
+if ($ARGV[0]=~/^(\d\d\d\d\-\d\d)$/)  
+        {$curr_month=$1}
+else {
+$curr_month=strftime "%Y-%m", localtime;
+}
+
+while(<IN>) 
+	{
+        $i++;
+        chomp;
+        #skip whitespace lines
+        if (/^\s*$/) {next}
+        #if (/^(\S+)\s+(\S+)\s+(\S+)/)
+        if (/^(\S+)\s+(\S+)\s+([\d\.]+\$?)($|\s)/)
+		{
+                $date=$1;
+		$type=$2; 
+		$sum=$3; 
+                $month=$date;
+                $month=~s@-\d\d$@@;
+                if ($sum=~/\$$/)
+                        {
+                        $sum=~s/\$//;
+                        }
+                        else
+                        {
+                        $sum=ccc($sum,"byr","usd",$date);
+                        }
+
+                if ( $month eq $curr_month )
+                        { 
+                        #print "date $date type $type sum $sum\n";
+                        $total+=$sum; 
+                        $hash{$type}+=$sum; 
+                        }
+		
+		}
+                else
+                {print "junk line #$i :  $_  \n exit!\n"; exit; }
+
+	} 
+
+
+print "\n== month $curr_month stats by type\n\n";
+
+foreach $type (sort { $hash{$a} <=> $hash{$b} } keys %hash) 
+	{
+	print sprintf("%.2f\$ ( %.2f\% )", $hash{$type}, (100*$hash{$type}/$total) ), " ",$type,"\n";
+	}
+
+sub ccc {
+
+my $amount=shift;
+my $from=shift;
+my $to=shift;
+my $date=shift;
+my $ccc=`ccc $amount $from $to $date`;
+chomp $ccc;
+return $ccc;
+}
+
+
