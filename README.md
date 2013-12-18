@@ -21,7 +21,7 @@ Finance tools
 **ambar.txt** contains lines to analyze. Each line has the following format:
 ```
 2013-12-22      home            9.94$     lamps
-YYYY-MM-DD      type            sum     option notes
+#YYYY-MM-DD      type            sum     option notes
 ```
 empty lines or lines starting from # are ignored.  Sum must be like 34czk or 2.8$ . If currency not specified then it is assumed BYR. Notes are really optional.
 
