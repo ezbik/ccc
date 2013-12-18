@@ -16,6 +16,7 @@ if echo "$RATE" | grep -qP "\d"
 then    :
 else   RATE=$( wget -q -O - http://currencies.apps.grandtrunk.net/getrate/$DATE/$FROM/$TO ) \
                 || echo wget FAIL
+        echo $RATE | grep -q -P '[\d\.]' || { echo "rate failed"  ; exit 2 ; }
         echo "$DATE,$FROM,$TO,$RATE" >>  ~/.ccc/rates.csv
 fi
 
@@ -33,8 +34,7 @@ DATE=$4
 
 get_rate
 
-printf '%.2f\n' $(echo "scale=2; $RATE*$AMOUNT" |bc)
-
+perl -e 'printf ("%.2f\n", '$RATE*$AMOUNT' ) '
 
 
 
