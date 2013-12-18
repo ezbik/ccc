@@ -23,7 +23,7 @@ Finance tools
 2013-12-22      home            9.94$     lamps
 #YYYY-MM-DD      type            sum     option notes
 ```
-empty lines or lines starting from # are ignored.  Sum must be like 34czk or 2.8$ . If currency not specified then it is assumed BYR. Notes are really optional.
+empty lines or lines starting from # are ignored.  Sum must be like 34czk or 2.8$ . If currency not specified then it is assumed BYR. Notes are really optional. Type can't contain spaces.
 
 **stats_daily** will show daily report for each day of the *current* month. Sample usage:
 ```
