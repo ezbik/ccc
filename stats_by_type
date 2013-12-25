@@ -14,6 +14,7 @@ while(<IN>)
 	{
         $i++;
         chomp;
+        s/\#.*//;
         #skip whitespace lines
         if (/^\s*$/) {next}
         #if (/^(\S+)\s+(\S+)\s+(\S+)/)
