@@ -1,0 +1,52 @@
+#!/bin/bash
+
+
+AMBAR=~/svn/ambar/ambar.txt 
+
+for TYPE in `head -1000 $AMBAR  | grep -v ^#| awk '{print $2}'|sort -u `; 
+do      i=$(($i+1))
+        TYPES[$i]="$TYPE"
+done
+
+#print array
+i=1
+while [ $i -lt ${#TYPES[@]} ] 
+do      echo "$i. ${TYPES[$i]}"
+        i=$((i+1))
+done |column
+
+echo
+echo "enter type:"
+read i
+TYPE=${TYPES[$i]}
+
+if [ -z "$TYPE" ] 
+then    echo "no type choosen"
+        exit
+else    echo "choosen $TYPE"
+fi
+
+DATE=`date +%F`
+
+echo "enter sum":
+read sum
+
+echo "enter comment [optional]":
+read comment
+
+STRING=$(echo -e "$DATE\t$TYPE\t\t$sum\t$comment" )
+
+echo "will I add the line"
+echo
+echo "$STRING"
+echo
+echo "y/n:"
+read answer
+
+if [ "$answer" == 'y' ]
+then    sed -i "1i $STRING" $AMBAR
+        svn diff
+else    echo "noop"
+fi
+
+

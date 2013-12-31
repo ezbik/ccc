@@ -45,5 +45,8 @@ $ ./stats_by_type  2013-12
 10.00$ ( 50.03% ) home
 ```
 
-**convert_to_USD.pl** will convert non-USD currencies to USD.
+**convert_to_USD.pl** will convert non-USD currencies to USD. Without -a arguement, it will be dry-run
+
+**add_ambar_record** will add a record interactively
+
 
