@@ -3,17 +3,19 @@
 
 AMBAR=~/svn/ambar/ambar.txt 
 
-for TYPE in `head -1000 $AMBAR  | grep -v ^#| awk '{print $2}'|sort -u `; 
+for TYPE in `head -1000 $AMBAR  | grep -v ^#| awk '{print $2}'|sort -u | grep -vE 'банк|питомец'`; 
 do      i=$(($i+1))
         TYPES[$i]="$TYPE"
+        #echo "=$i=$TYPE"
 done
 
 #print array
 i=1
-while [ $i -lt ${#TYPES[@]} ] 
+while [ $i -lt $((1+${#TYPES[@]})) ] 
 do      echo "$i. ${TYPES[$i]}"
         i=$((i+1))
 done |column
+
 
 echo
 echo "enter type:"
@@ -45,7 +47,7 @@ read answer
 
 if [ "$answer" == 'y' ]
 then    sed -i "1i $STRING" $AMBAR
-        svn diff
+        svn diff $AMBAR
 else    echo "noop"
 fi
 
