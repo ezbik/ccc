@@ -1,0 +1,32 @@
+# bash completion for fuse
+
+have add_ambar_record &&
+_add_ambar_record()
+{
+    COMPREPLY=()
+    local cur prev
+   _get_comp_words_by_ref  cur prev
+
+        echo "cur='$cur' prev='$prev'"  >> ~/tmp/bbb
+
+        if  [  "$prev" == "-t" ]
+        then
+                #COMPREPLY=( $( compgen -W 'byfly благотворительность'  -- "$cur" ) )
+                AMBAR=~/svn/ambar/ambar.txt
+                COMPREPLY=( $( compgen -W "$( add_ambar_record -l )"  -- "$cur" ) )
+                return 0
+        else    
+                COMPREPLY=( $( compgen  -W '-t -s -c ' -- "$cur" ) )
+                return 0
+        fi
+
+} &&
+complete  -F _add_ambar_record add_ambar_record
+
+# Local variables:
+# mode: shell-script
+# sh-basic-offset: 4
+# sh-indent-comment: t
+# indent-tabs-mode: nil
+# End:
+# ex: ts=4 sw=4 et filetype=sh
