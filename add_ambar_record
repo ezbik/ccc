@@ -1,9 +1,84 @@
 #!/bin/bash
 
-
 AMBAR=~/svn/ambar/ambar.txt 
+DATE=`date +%F`
+TYPES_LIST=`head -1000 $AMBAR  | grep -v ^#| awk '{print $2}'|sort -u | grep -vE 'банк|питомец'`; 
 
-for TYPE in `head -1000 $AMBAR  | grep -v ^#| awk '{print $2}'|sort -u | grep -vE 'банк|питомец'`; 
+function add_string {
+local STRING=$1
+
+echo "will I add the line"
+echo
+echo -e "$STRING"
+echo
+echo "y/n:"
+read answer
+
+if [ "$answer" == 'y' ]
+then    sed -i "1i $STRING" $AMBAR
+        svn diff $AMBAR
+else    echo "noop"
+fi
+
+}
+
+######
+
+usage ()  {
+echo "add record: $(basename $0) -t TYPE -s sum [-c comment]"
+echo "get help:   $(basename $0) -h"
+echo "list types: $(basename $0) -l"
+exit
+
+}
+
+#####
+
+
+list_types () {
+
+for T in $TYPES_LIST
+do echo $T
+done
+}
+
+###################
+
+while getopts ":t:s:c:hl" opt; do
+  case $opt in
+    t)  TYPE=$OPTARG
+      #echo "FLAG was triggered, Parameter: $OPTARG" 
+      ;;
+    s)  sum=$OPTARG
+        ;;
+    c)  COMMENT=$OPTARG
+        ;;
+    h)  usage
+        ;;
+    l)  list_types|column
+        exit
+        ;;
+    \?)
+      echo "Invalid option: -$OPTARG" >&2
+      exit 1
+      ;;
+    :)
+      echo "Option -$OPTARG requires an argument." >&2
+      exit 1
+      ;;
+  esac
+done
+
+
+if [ -n "$TYPE" ] && [ -n "$sum" ]
+then
+        # batch mode
+        add_string "$DATE\t$TYPE\t\t$sum\t$comment"
+        exit
+fi
+
+
+for TYPE in $TYPES_LIST 
 do      i=$(($i+1))
         TYPES[$i]="$TYPE"
         #echo "=$i=$TYPE"
@@ -18,7 +93,7 @@ done |column
 
 
 echo
-echo "enter type:"
+echo "enter type [#]:"
 read i
 TYPE=${TYPES[$i]}
 
@@ -28,7 +103,6 @@ then    echo "no type choosen"
 else    echo "choosen $TYPE"
 fi
 
-DATE=`date +%F`
 
 echo "enter sum":
 read sum
@@ -36,19 +110,6 @@ read sum
 echo "enter comment [optional]":
 read comment
 
-STRING=$(echo -e "$DATE\t$TYPE\t\t$sum\t$comment" )
-
-echo "will I add the line"
-echo
-echo "$STRING"
-echo
-echo "y/n:"
-read answer
-
-if [ "$answer" == 'y' ]
-then    sed -i "1i $STRING" $AMBAR
-        svn diff $AMBAR
-else    echo "noop"
-fi
+add_string "$DATE\t$TYPE\t\t$sum\t$comment"
 
 

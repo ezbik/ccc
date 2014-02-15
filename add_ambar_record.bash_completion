@@ -16,7 +16,7 @@ _add_ambar_record()
                 COMPREPLY=( $( compgen -W "$( add_ambar_record -l )"  -- "$cur" ) )
                 return 0
         else    
-                COMPREPLY=( $( compgen  -W '-t -s -c ' -- "$cur" ) )
+                COMPREPLY=( $( compgen  -W '-t -s -c -l -h ' -- "$cur" ) )
                 return 0
         fi
 
