@@ -7,7 +7,7 @@ _add_ambar_record()
     local cur prev
    _get_comp_words_by_ref  cur prev
 
-        echo "cur='$cur' prev='$prev'"  >> ~/tmp/bbb
+        #echo "cur='$cur' prev='$prev'"  >> ~/tmp/bbb
 
         if  [  "$prev" == "-t" ]
         then
