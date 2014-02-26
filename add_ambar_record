@@ -51,7 +51,7 @@ while getopts ":t:s:c:hl" opt; do
       ;;
     s)  sum=$OPTARG
         ;;
-    c)  COMMENT=$OPTARG
+    c)  comment=$OPTARG
         ;;
     h)  usage
         ;;
