@@ -21,7 +21,7 @@ _add_ambar_record()
         fi
 
 } &&
-complete  -F _add_ambar_record add_ambar_record
+complete -o filenames   -F _add_ambar_record add_ambar_record
 
 # Local variables:
 # mode: shell-script
