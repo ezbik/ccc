@@ -12,7 +12,7 @@ while(<IN>)
         #skip whitespace lines
         s/\#.*//; 
         if (/^\s*$/) {next}
-	if (/^(\S+)\s+(\S+)\s+([\d\$\.]+)($|\s)/) 
+	if (/^(\S+)\s+(\S+)\s+([\d\.]+[\w\$]+)($|\s)/) 
 		{
 		$date=$1;
                 $descr=$2; 
