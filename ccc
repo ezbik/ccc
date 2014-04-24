@@ -14,7 +14,7 @@ get_rate () {
 RATE=$(cat ~/.ccc/rates.csv | grep -P "$DATE,$FROM,$TO,.+" |head -n1 | cut -d, -f4)
 if echo "$RATE" | grep -qP "\d"
 then    :
-else   RATE=$( wget -q -O - http://currencies.apps.grandtrunk.net/getrate/$DATE/$FROM/$TO|head -1) \
+else   RATE=$( wget --timeout=5 -q -O - http://currencies.apps.grandtrunk.net/getrate/$DATE/$FROM/$TO|head -1) \
                 || echo wget FAIL
         echo $RATE | grep -q -P '^[\d\.]+$' || { echo "rate failed"  ; exit 2 ; }
         echo "$DATE,$FROM,$TO,$RATE" >>  ~/.ccc/rates.csv
