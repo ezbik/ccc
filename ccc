@@ -16,7 +16,7 @@ if echo "$RATE" | grep -qP "\d"
 then    :
 else   RATE=$( wget -q -O - http://currencies.apps.grandtrunk.net/getrate/$DATE/$FROM/$TO|head -1) \
                 || echo wget FAIL
-        echo $RATE | grep -q -P '^[\d\.]+$' || { echo "rate failed"  ; exit 2 ; }
+        echo $RATE | grep -q -P '^[\d\.\-e]+$' || { echo "rate failed"  ; exit 2 ; }
         echo "$DATE,$FROM,$TO,$RATE" >>  ~/.ccc/rates.csv
 fi
 
