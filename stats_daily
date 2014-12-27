@@ -27,7 +27,8 @@ while(<IN>)
                         }
                         else 
                         {
-                        $sum=ccc($sum,"byr","usd",$date);
+                        #$sum=ccc($sum,"byr","usd",$date);
+                        print "junk line #$i :  $_  \n exit!\n"; exit; 
                         }
         
 		$day_hash{$date}+=$sum ; 
