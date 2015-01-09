@@ -15,12 +15,12 @@ RATE=$(cat ~/.ccc/rates.csv | grep -P "$DATE,$FROM,$TO,.+" |head -n1 | cut -d, -
 if echo "$RATE" | grep -qP "\d"
 then    :
 else   
-        #RATE=$( wget --timeout=5 -q -O - http://currencies.apps.grandtrunk.net/getrate/$DATE/$FROM/$TO|head -1) \ 
-                #|| echo wget FAIL
-        FROM=$(echo $FROM | tr '[a-z]' '[A-Z]')
-        TO=$(  echo $TO   | tr '[a-z]' '[A-Z]')
-        RATE=$( wget --timeout=5 -q -O - "https://openexchangerates.org/api/historical/$DATE.json?base=$FROM&app_id=921d23f3a412407eae11c2ad177c6648"  | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["rates"]["'$TO'"]'  ) \
+        RATE=$( wget --timeout=5 -q -O - http://currencies.apps.grandtrunk.net/getrate/$DATE/$FROM/$TO|head -1) \
                 || echo wget FAIL
+        #FROM=$(echo $FROM | tr '[a-z]' '[A-Z]')
+        #TO=$(  echo $TO   | tr '[a-z]' '[A-Z]')
+        #RATE=$( wget --timeout=5 -q -O - "https://openexchangerates.org/api/historical/$DATE.json?base=$FROM&app_id=921d23f3a412407eae11c2ad177c6648"  | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["rates"]["'$TO'"]'  ) \
+                #|| echo wget FAIL
         echo $RATE | grep -q -P '^[\d\.\-e]+$' || { echo "rate failed"  ; exit 2 ; }
         FROM=$(echo $FROM | tr '[A-Z]' '[a-z]')
         TO=$(  echo $TO   | tr '[A-Z]' '[a-z]')
