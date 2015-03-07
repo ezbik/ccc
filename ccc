@@ -41,7 +41,7 @@ DATE=$4
 
 get_rate
 
-perl -e 'printf ("%.2f\n", '$RATE*$AMOUNT' ) '
+perl -e 'printf ("%.6f\n", '$RATE*$AMOUNT' ) '
 
 
 
