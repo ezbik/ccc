@@ -1,7 +1,13 @@
 #!/usr/bin/perl
 
 use POSIX qw(strftime);
-$now_month = strftime "%Y-%m", localtime;
+
+if ($ARGV[0]=~/^(\d\d\d\d\-\d\d)$/)
+        {$curr_month=$1}
+else {
+$curr_month=strftime "%Y-%m", localtime;
+}
+
 
 open IN, "<ambar.txt";
 
@@ -20,7 +26,7 @@ while(<IN>)
 		$month=$date;
 		$month=~s@-\d\d$@@;
                 #print "date=$date sum=$sum\n";
-                if ($month ne $now_month) {next}
+                if ($month ne $curr_month) {next}
 		if ($sum=~/\$$/) 
                         {
                         $sum=~s/\$//;
@@ -44,7 +50,7 @@ while(<IN>)
 
 foreach $date (sort keys %day_hash) 
 	{
-	if ($date=~/^$now_month/) { 
+	if ($date=~/^$curr_month/) { 
 		print $date," ",sprintf("%.2f\$", $day_hash{$date}),"\t",$day_hash_descr{$date},"\n";
 		}
 	}
@@ -53,7 +59,7 @@ foreach $date (sort keys %day_hash)
 
 print "-"x30,"\n";
 
-print "$now_month\t",(0+$month_hash{$now_month}),"\$\n"; 
+print "$curr_month\t",(0+$month_hash{$curr_month}),"\$\n"; 
 
 
 sub ccc {
