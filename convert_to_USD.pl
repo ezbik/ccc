@@ -4,6 +4,7 @@ $APPLY=$ARGV[0];
 
 #sub usage { print "Usage: $0 [--apply|-a]\n"; exit }
 
+####################################
 sub ccc_my {
 
 my $src=shift;
@@ -32,6 +33,8 @@ else { print "wrong currency $src\n"; exit }
 }
 
 
+####################################
+
 sub  perl_reg {
 
 my $in=shift;
@@ -57,7 +60,9 @@ close IN;
 close OUT;
 
 }
+####################################
 
+if (! -f "ambar.txt" ) {print "the file being converted, ambar.txt , doesnt exist; exit\n"; exit; } 
 $TMP="/tmp/a.tmp";
 perl_reg("ambar.txt", $TMP);
 

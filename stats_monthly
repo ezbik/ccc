@@ -1,0 +1,52 @@
+#!/usr/bin/perl
+
+use POSIX qw(strftime);
+open IN, "<ambar.txt";
+
+while(<IN>) 
+	{
+        $i++;
+        #skip whitespace lines
+        s/\#.*//; 
+        if (/^\s*$/) {next}
+	#if (/^(\S+)\s+\S+\s+(\S+)/) 
+        if (/^(\S+)\s+\S+\s+([\d\$\.]+)($|\s)/)
+		{
+		$sum=$2; 
+		$date=$1; 
+		$month=$date;
+		$month=~s@-\d\d$@@;
+		if ($sum=~/\$$/)
+                        {
+                        $sum=~s/\$//;
+                        }
+                        else
+                        {
+                        $sum=ccc($sum,"byr","usd",$date);
+                        }
+
+		$month_hash{$month}+=$sum ; 
+		}
+                else 
+                {print "junk line #$i :  $_  \n exit!\n"; exit; }
+	} 
+
+ # print current month payments
+
+foreach $date (sort keys %month_hash) { print $date," ",sprintf("%.2f\$", $month_hash{$date}),"\n"; }
+
+
+
+sub ccc {
+
+my $amount=shift;
+my $from=shift;
+my $to=shift;
+my $date=shift;
+my $ccc=`ccc $amount $from $to $date`;
+chomp $ccc;
+return $ccc;
+}
+
+
+
