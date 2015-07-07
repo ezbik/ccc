@@ -1,6 +1,6 @@
 #!/bin/bash
 
-mkdir -p  ~/.ccc
+test -d  ~/.ccc || mkdir  ~/.ccc  -p
 
 usage () {
 echo "USAGE
