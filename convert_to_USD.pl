@@ -26,10 +26,15 @@ elsif ($src=~/([\d\.]+)/)
 else { print "wrong currency $src\n"; exit }
 
         my $ccc_run="ccc $src_amo $src_cur usd $date";
-        my $ccc=sprintf("%.2f", `$ccc_run`);
+        my $ccc=`$ccc_run`;
         chomp $ccc;
-        if ($ccc =~ /^[\d\.]+$/ ) { return $ccc }
-                else { print "bad result '$ccc' from: \`$ccc_run\`\n"; exit }
+        #print "===$ccc===\n";
+        if ($ccc =~ /^[\d\.]+$/ ) 
+                { 
+                $ccc=sprintf("%.2f", `$ccc_run`);
+                return $ccc;
+                }
+        else { print "bad result '$ccc' from: \`$ccc_run\`\n"; exit }
 }
 
 
