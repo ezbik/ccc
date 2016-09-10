@@ -12,6 +12,7 @@ my $src=shift;
 #       29000   =considered BYR
 #       29czk   =considered CZK
 my $date=shift;
+my $default_src_cur=shift;
 
 if ($src=~/([\d\.]+)(\D+)/)
         {
@@ -21,7 +22,7 @@ if ($src=~/([\d\.]+)(\D+)/)
 elsif ($src=~/([\d\.]+)/)
         {
         $src_amo=$1;
-        $src_cur='byr';
+        $src_cur=$default_src_cur;
         }
 else { print "wrong currency $src\n"; exit }
 
@@ -47,16 +48,20 @@ my $out=shift;
 
 open IN, "<$in";
 open OUT, ">$out";
+
+$default_src_cur="czk";
+
 while(<IN>)
         {
         chomp;
         $out=$_;
+        if (/^DEFAULT_CURRENCY=(\S+)/) {$default_src_cur=$1}
         if (/[\d\.]+\$/) 
                 { # dollar sign detected; no actions
                 } 
                 else 
                 {
-                $out=~s@^(\d{4}\-\d{2}\-\d{2})(\s+\S+\s+)([\d\.\S]+)(.*)@"$1"."$2".ccc_my($3,$1)."\$"."\t\t[orig: ".$3."]".$4@e
+                $out=~s@^(\d{4}\-\d{2}\-\d{2})(\s+\S+\s+)([\d\.\S]+)(.*)@"$1"."$2".ccc_my($3,$1,$default_src_cur)."\$"."\t\t[orig: ".$3."]".$4@e
                 } 
         print OUT $out,"\n";
         }

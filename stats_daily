@@ -18,6 +18,7 @@ while(<IN>)
         #skip whitespace lines
         s/\#.*//; 
         if (/^\s*$/) {next}
+        if (/^DEFAULT_CURRENCY/) {next}
 	if (/^(\S+)\s+(\S+)\s+([\d\.]+[\w\$]+)($|\s)/) 
 		{
 		$date=$1;
