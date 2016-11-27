@@ -9,6 +9,7 @@ while(<IN>)
         #skip whitespace lines
         s/\#.*//; 
         if (/^\s*$/) {next}
+        if (/^DEFAULT_CURRENCY/) {next}
 	#if (/^(\S+)\s+\S+\s+(\S+)/) 
         if (/^(\S+)\s+\S+\s+([\d\$\.]+)($|\s)/)
 		{
