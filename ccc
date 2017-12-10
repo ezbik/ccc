@@ -34,17 +34,10 @@ pre_rate () {
 
 local K
 
-if [[ $FROM == "sat" ]]
-then
-    FROM=btc
-    K=0.00000001
-fi
-
-if [[ $TO == "sat" ]]
-then
-    TO=btc
-    K=100000000
-fi
+if [[ $FROM == "sat"  ]] ; then FROM=btc ; K=0.00000001 ; fi
+if [[ $TO   == "sat"  ]] ; then TO=btc   ; K=100000000  ; fi
+if [[ $FROM == "mbtc" ]] ; then FROM=btc ; K=0.001      ; fi
+if [[ $TO   == "mbtc" ]] ; then TO=btc   ; K=1000       ; fi
 
 if [[ -n $K ]]
 then
