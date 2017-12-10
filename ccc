@@ -30,6 +30,30 @@ fi
 
 }
 
+pre_rate () {
+
+local K
+
+if [[ $FROM == "sat" ]]
+then
+    FROM=btc
+    K=0.00000001
+fi
+
+if [[ $TO == "sat" ]]
+then
+    TO=btc
+    K=100000000
+fi
+
+if [[ -n $K ]]
+then
+    AMOUNT=$( perl -e 'printf ("%.16f\n", '$K*$AMOUNT' ) ' )
+fi
+
+}
+
+
 AMOUNT=$1
 FROM=$(echo $2 | tr '[A-Z]' '[a-z]')
 TO=$(echo $3| tr '[A-Z]' '[a-z]')
@@ -38,6 +62,8 @@ DATE=$4
 [ -z "$TO" ] && usage
 
 [ -z "$DATE" ] && DATE=`date +%F`
+
+pre_rate
 
 get_rate
 
