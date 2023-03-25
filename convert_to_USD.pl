@@ -1,5 +1,7 @@
 #!/usr/bin/perl
 
+$default_src_cur="czk";
+
 $APPLY=$ARGV[0];
 
 #sub usage { print "Usage: $0 [--apply|-a]\n"; exit }
@@ -49,7 +51,6 @@ my $out=shift;
 open IN, "<$in";
 open OUT, ">$out";
 
-$default_src_cur="czk";
 
 while(<IN>)
         {
