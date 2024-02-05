@@ -30,13 +30,14 @@ else
             fi
 
             local NBRB_O=`mktemp /tmp/nbrb.XXXXXXXXXXX`
-            curl   $PROXY -Ss   "https://www.nbrb.by/api/exrates/rates/$NBRB_Q?ondate=$DATE&periodicity=0&parammode=2" -Ss  > $NBRB_O || exit 22
+            curl -m2  $PROXY -Ss   "https://www.nbrb.by/api/exrates/rates/$NBRB_Q?ondate=$DATE&periodicity=0&parammode=2" -Ss  > $NBRB_O || exit 22
 
             RATE=$(     cat  $NBRB_O | jq .Cur_OfficialRate  -r)
             SCALE=$(    cat  $NBRB_O | jq .Cur_Scale  -r)
             rm -f $NBRB_O
             RATE=$( perl -e 'print '$RATE'/'$SCALE  )
 
+            # RATE=$( curl -m4 https://kurs.onliner.by/ -Ss | grep 'var calculatorNBRBConversionRates'  | cut -d= -f2-| sed 's@;.*@@'|  jq -r '."usd/byn"'  )
             if [[ $FROM == byn ]] ; then  RATE=$( perl -e 'printf ("%.16f\n", (1/'$RATE' )  ) ' ) ; fi
 
         else
@@ -74,7 +75,7 @@ fi
 }
 
 
-AMOUNT=$1
+AMOUNT=$(echo $1| sed 's@,@.@g' )
 FROM=$(echo $2 | tr '[A-Z]' '[a-z]')
 TO=$(echo $3| tr '[A-Z]' '[a-z]')
 DATE=$4
