@@ -41,7 +41,7 @@ else
 
         else
 
-            RATE=$( curl -m5 -Ss https://currencies.apps.grandtrunk.net/getrate/$DATE/$FROM/$TO|head -1) \
+            RATE=$( curl -k -m5 -Ss https://currencies.apps.grandtrunk.net/getrate/$DATE/$FROM/$TO|head -1) \
                 || echo wget FAIL
         #FROM=$(echo $FROM | tr '[a-z]' '[A-Z]')
         #TO=$(  echo $TO   | tr '[a-z]' '[A-Z]')
