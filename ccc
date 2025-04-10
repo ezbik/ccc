@@ -1,6 +1,5 @@
 #!/bin/bash
 
-ME_IN_BELARUS=1
 
 test -d  ~/.ccc || mkdir  ~/.ccc  -p
 
@@ -21,21 +20,28 @@ else
         if [[ $FROM == byn ]] || [[ $TO == byn ]]
         then
             :
+########## NBRB start
+#            if [[ $TO == byn ]]
+#            then NBRB_Q=$FROM
+#            else NBRB_Q=$TO
+#            fi
+#            local NBRB_O=`mktemp /tmp/nbrb.XXXXXXXXXXX`
+#            curl -m2  -Ss   "https://www.nbrb.by/api/exrates/rates/$NBRB_Q?ondate=$DATE&periodicity=0&parammode=2" -Ss  > $NBRB_O || exit 22
+#            RATE=$(     cat  $NBRB_O | jq .Cur_OfficialRate  -r)
+#            SCALE=$(    cat  $NBRB_O | jq .Cur_Scale  -r)
+#            rm -f $NBRB_O
+#            RATE=$( perl -e 'print '$RATE'/'$SCALE  )
+########## NBRB end
+
+########## myfin start
             if [[ $TO == byn ]]
             then NBRB_Q=$FROM
             else NBRB_Q=$TO
             fi
-            if [[ 1 != $ME_IN_BELARUS ]]    
-            then PROXY="-x socks5://localhost:16000"
-            fi
-
-            local NBRB_O=`mktemp /tmp/nbrb.XXXXXXXXXXX`
-            curl -m2  $PROXY -Ss   "https://www.nbrb.by/api/exrates/rates/$NBRB_Q?ondate=$DATE&periodicity=0&parammode=2" -Ss  > $NBRB_O || exit 22
-
-            RATE=$(     cat  $NBRB_O | jq .Cur_OfficialRate  -r)
-            SCALE=$(    cat  $NBRB_O | jq .Cur_Scale  -r)
-            rm -f $NBRB_O
-            RATE=$( perl -e 'print '$RATE'/'$SCALE  )
+            DATE2=$( date -d$DATE -d-1day +%d.%m.%Y )
+            #echo ======$DATE - $DATE2
+            RATE=$( curl -m2 -Ss "https://myfin.by/ajaxnew/pair-rate-chart?type_to=$NBRB_Q&type_from=byn&sum=1"   | grep dataProvider  | head -n1  | yq | jq '.dataProvider[]|select(.date|match("'$DATE2'"))|.byn' -r  )
+########## myfin end
 
             # RATE=$( curl -m4 https://kurs.onliner.by/ -Ss | grep 'var calculatorNBRBConversionRates'  | cut -d= -f2-| sed 's@;.*@@'|  jq -r '."usd/byn"'  )
             if [[ $FROM == byn ]] ; then  RATE=$( perl -e 'printf ("%.16f\n", (1/'$RATE' )  ) ' ) ; fi
