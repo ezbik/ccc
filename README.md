@@ -11,5 +11,5 @@ $ ccc.py 45 czk USD 2012-02-02
 2.34
 ```
 
-It uses free API http://currencies.apps.grandtrunk.net/ and maintains local cache in ~/.ccc/ in CSV format
+It uses free API http://currencies.apps.grandtrunk.net/ and a local cache.
 
